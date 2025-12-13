@@ -898,7 +898,7 @@ function bindToolbar() {
   // View Shop button (persist first so standalone /shop.html sees edits)
   Utils.q('#btn-view-shop').addEventListener('click', () => {
     safeSaveProducts();
-    window.open('/shop.html', '_blank');
+    window.open('../shop.html', '_blank');
   });
 
   // Live shop modal (persist first)
@@ -1851,7 +1851,7 @@ async function openShopModal() {
     const desc  = (p?.short_description || p?.description || '').toString().replace(/<[^>]*>/g, '');
     const short = desc.length > 120 ? (desc.slice(0, 120) + '…') : desc;
 
-    const productUrl = (location && location.origin ? location.origin : '') + '/shop.html';
+    const productUrl = new URL('../shop.html', location.href).href;
 
     const card = document.createElement('div');
     card.className = 'shop-preview-card';

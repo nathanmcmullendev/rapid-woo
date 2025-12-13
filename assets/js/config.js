@@ -26,7 +26,12 @@ window.RapidWoo.Config = {
     //
     // If you prefer your existing name, make sure the PHP is at this path:
     UPLOAD: '/upload-temp.php',
-    PRODUCTS_JSON: '/demo/products.json'
+    // Dynamic path: works from both root pages and /demo/ pages
+    // From root: ./demo/products.json | From demo/: ./products.json
+    PRODUCTS_JSON: (function() {
+      const path = window.location.pathname;
+      return path.includes('/demo/') ? './products.json' : './demo/products.json';
+    })()
   },
 
   // --------------------------------------------
