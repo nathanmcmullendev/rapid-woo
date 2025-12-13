@@ -1,0 +1,350 @@
+{
+  "products": [
+    {
+  "id": 1762000000001,
+  "title": "Graphic T-Shirt — Neon Wave",
+  "slug": "graphic-tshirt-neon-wave",
+  "sku": "TSHIRT-NEON-001",
+  "type": "variable",
+  "stock_status": "instock",
+  "regular_price": "24.99",
+  "sale_price": "19.99",
+  "price": "19.99", 
+  "attributes": { "Size": ["S","M","L","XL"] },
+"variations": [
+  { "id": 1762000001001, "sku": "TSHIRT-NEON-001-S",  "attributes": { "Size": "S"  }, "price_delta": "+0.00", "stock_status": "instock" },
+  { "id": 1762000001002, "sku": "TSHIRT-NEON-001-M",  "attributes": { "Size": "M"  }, "price_delta": "+0.00", "stock_status": "instock" },
+  { "id": 1762000001003, "sku": "TSHIRT-NEON-001-L",  "attributes": { "Size": "L"  }, "price_delta": "+3.00", "stock_status": "instock" },
+  { "id": 1762000001004, "sku": "TSHIRT-NEON-001-XL", "attributes": { "Size": "XL" }, "price_delta": "+5.00", "stock_status": "onbackorder" }
+],
+
+  "categories": ["Clothing", "Apparel"],
+  "tags": ["tshirt", "cotton", "unisex", "graphic"],
+  "image": "https://rapidwoo.com/demo/store-1/product-images/tshirt-1.jpg",
+  "images": [
+    { "src": "https://rapidwoo.com/demo/store-1/product-images/tshirt-1.jpg" },
+    { "src": "https://rapidwoo.com/demo/store-1/product-images/tshirt-2.jpg" },
+    { "src": "https://rapidwoo.com/demo/store-1/product-images/tshirt-3.jpg" }
+  ],
+  "extra_images_enabled": true,
+  "description": "<p>Soft 100% cotton tee with a bold neon wave print. Unisex fit. Sizes S–XL.</p>",
+  "short_description": "Bold neon graphic tee.",
+  "manage_stock": true,
+  "stock_quantity": 60,
+  "weight": "0.4",
+  "dimensions": { "length": "", "width": "", "height": "" },
+  "shipping_class": "apparel",
+  "sold_individually": false,
+  "hidden": false
+},
+    {
+      "id": 1762000000002,
+      "title": "Wireless Headphones — Matte Black",
+      "slug": "wireless-headphones-matte-black",
+      "sku": "HEAD-WIRE-101",
+      "stock_status": "instock",
+      "regular_price": "79.99",
+      "sale_price": "59.99",
+      "price": "59.99",
+      "categories": ["Electronics", "Audio"],
+      "tags": ["wireless", "bluetooth", "headphones", "noise-canceling"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/headphones-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/headphones-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/headphones-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/headphones-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/headphones-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/headphones-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Premium wireless headphones with comfortable over-ear design, BT 5.0, and up to 25 hours battery.</p>",
+      "short_description": "Comfortable, long-battery wireless cans.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 35,
+      "weight": "0.7",
+      "dimensions": { "length": "7", "width": "6", "height": "3" },
+      "shipping_class": "small-package",
+      "sold_individually": false,
+      "hidden": false
+    },
+    {
+      "id": 1762000000003,
+      "title": "Pullover Hoodie — Minimal Logo",
+      "slug": "pullover-hoodie-minimal-logo",
+      "sku": "HOOD-MIN-001",
+      "stock_status": "instock",
+      "regular_price": "49.99",
+      "sale_price": "",
+      "price": "49.99",
+      "categories": ["Clothing", "Apparel"],
+      "tags": ["hoodie", "fleece", "unisex"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/hoodie-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/hoodie-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/hoodie-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/hoodie-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/hoodie-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/hoodie-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Mid-weight fleece hoodie with a minimalist chest logo. Sizes XS–XXL.</p>",
+      "short_description": "Cozy fleece hoodie.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 22,
+      "weight": "1.3",
+      "dimensions": { "length": "", "width": "", "height": "" },
+      "shipping_class": "apparel",
+      "featured": false,
+      "sold_individually": false,
+      "hidden": false
+    },
+    {
+      "id": 1762000000004,
+      "title": "Stainless Travel Mug — 16oz",
+      "slug": "stainless-travel-mug-16oz",
+      "sku": "MUG-TRAVEL-016",
+      "stock_status": "instock",
+      "regular_price": "19.99",
+      "sale_price": "16.99",
+      "price": "16.99",
+      "categories": ["Home", "Gifts"],
+      "tags": ["mug", "travel", "insulated"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/mug-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/mug-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/mug-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/mug-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/mug-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/mug-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Double-wall insulated stainless steel mug keeps drinks hot or cold for hours.</p>",
+      "short_description": "Leak-resistant travel mug.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 48,
+      "weight": "0.8",
+      "dimensions": { "length": "3.2", "width": "3.2", "height": "7" },
+      "shipping_class": "small-package",
+      "featured": false,
+      "sold_individually": false,
+      "hidden": false
+    },
+    {
+      "id": 1762000000005,
+      "title": "Canvas Tote — Market Day",
+      "slug": "canvas-tote-market-day",
+      "sku": "TOTE-CANVAS-001",
+      "stock_status": "instock",
+      "regular_price": "14.99",
+      "sale_price": "",
+      "price": "14.99",
+      "categories": ["Accessories"],
+      "tags": ["tote", "canvas", "reusable"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/tote-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/tote-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/tote-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/tote-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/tote-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/tote-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Durable 12oz canvas tote with long handles and a roomy interior.</p>",
+      "short_description": "Sturdy everyday tote.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 80,
+      "weight": "0.5",
+      "dimensions": { "length": "16", "width": "4", "height": "14" },
+      "shipping_class": "small-package",
+      "featured": false,
+      "sold_individually": false,
+      "hidden": false
+    },
+    {
+      "id": 1762000000006,
+      "title": "Phone Case — Clear Matte",
+      "slug": "phone-case-clear-matte",
+      "sku": "CASE-CLR-001",
+      "stock_status": "instock",
+      "regular_price": "17.99",
+      "sale_price": "14.99",
+      "price": "14.99",
+      "categories": ["Accessories", "Mobile"],
+      "tags": ["phone", "case", "clear"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/phone-case-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/phone-case-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/phone-case-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/phone-case-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/phone-case-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/phone-case-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Shock-absorbing clear case with anti-yellowing matte finish. Popular models supported.</p>",
+      "short_description": "Protective clear case.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 120,
+      "weight": "0.2",
+      "dimensions": { "length": "6.5", "width": "3.3", "height": "0.4" },
+      "shipping_class": "small-package",
+      "featured": false,
+      "sold_individually": false,
+      "hidden": false
+    },
+    {
+      "id": 1762000000007,
+      "title": "Desk Mat — Extended 35\"",
+      "slug": "desk-mat-extended-35",
+      "sku": "DSK-MAT-035",
+      "stock_status": "instock",
+      "regular_price": "29.99",
+      "sale_price": "",
+      "price": "29.99",
+      "categories": ["Office", "Accessories"],
+      "tags": ["desk", "mat", "workspace"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/desk-mat-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/desk-mat-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/desk-mat-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/desk-mat-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/desk-mat-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/desk-mat-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Non-slip extended desk mat with stitched edges and smooth tracking surface.</p>",
+      "short_description": "Upgrade your workspace.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 40,
+      "weight": "1.1",
+      "dimensions": { "length": "35", "width": "15.7", "height": "0.1" },
+      "shipping_class": "small-package",
+      "featured": false,
+      "sold_individually": false,
+      "hidden": false
+    },
+    {
+  "id": 1763000000200,
+  "title": "Poster — Minimal Mountains",
+  "slug": "poster-minimal-mountains",
+  "sku": "POST-MIN-0001",
+  "type": "variable",
+  "stock_status": "instock",
+  "regular_price": "21.99",
+  "sale_price": "",
+  "price": "21.99",
+  "attributes": { "Size": ["16×20 Print", "24×36 Print", "24×36 Canvas"] },
+  "variations": [
+    { "id": 176300002001, "sku": "POST-MIN-1620-PRINT",  "attributes": { "Size": "16×20 Print" },         "price_delta": "+0.00", "stock_status": "instock" },
+    { "id": 176300002002, "sku": "POST-MIN-2436-PRINT",  "attributes": { "Size": "24×36 Print" },         "price_delta": "+6.00", "stock_status": "instock" },
+    { "id": 176300002004, "sku": "POST-MIN-2436-CANVAS", "attributes": { "Size": "24×36 Canvas" },        "price_delta": "+24.00","stock_status": "instock" }
+  ],
+  "categories": ["Decor", "Art Prints"],
+  "tags": ["poster", "minimal", "mountains", "wall-art"],
+  "image": "https://rapidwoo.com/demo/store-1/product-images/poster-1.jpg",
+  "images": [
+    { "src": "https://rapidwoo.com/demo/store-1/product-images/poster-1.jpg" },
+    { "src": "https://rapidwoo.com/demo/store-1/product-images/poster-2.jpg" },
+    { "src": "https://rapidwoo.com/demo/store-1/product-images/poster-3.jpg" }
+  ],
+  "extra_images_enabled": true,
+  "description": "<p>Premium matte poster with minimalist mountain artwork. Options include print, framed, and canvas.</p>",
+  "short_description": "Clean, modern wall art.",
+  "manage_stock": true,
+  "stock_quantity": 80,
+  "weight": "0.4",
+  "dimensions": { "length": "36", "width": "24", "height": "0.1" },
+  "shipping_class": "flat-mailer",
+  "sold_individually": false,
+  "hidden": false
+},
+    {
+      "id": 1762000000009,
+      "title": "Sticker Pack — Tech Icons (10 pcs)",
+      "slug": "sticker-pack-tech-icons-10",
+      "sku": "STICK-TECH-010",
+      "stock_status": "instock",
+      "regular_price": "6.99",
+      "sale_price": "",
+      "price": "6.99",
+      "categories": ["Accessories", "Gifts"],
+      "tags": ["stickers", "vinyl", "laptop"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/stickers-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/stickers-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/stickers-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/stickers-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/stickers-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/stickers-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Durable vinyl stickers with a matte finish. Water-resistant and long-lasting.</p>",
+      "short_description": "Laptop-friendly vinyl stickers.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 150,
+      "weight": "0.1",
+      "dimensions": { "length": "6", "width": "4", "height": "0.1" },
+      "shipping_class": "letter",
+      "featured": false,
+      "sold_individually": false,
+      "hidden": false
+    },
+	
+    {
+      "id": 1762000000010,
+      "title": "Smartwatch Band — Sport Silicone",
+      "slug": "smartwatch-band-sport-silicone",
+      "sku": "WATCH-BAND-001",
+      "stock_status": "instock",
+      "regular_price": "24.99",
+      "sale_price": "18.99",
+      "price": "18.99",
+      "categories": ["Accessories", "Wearables"],
+      "tags": ["watch", "band", "silicone"],
+      "image": "https://rapidwoo.com/demo/store-1/product-images/band-1.jpg",
+      "gallery": [
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/band-2.jpg" },
+        { "url": "https://rapidwoo.com/demo/store-1/product-images/band-3.jpg" }
+      ],
+      "images": [
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/band-1.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/band-2.jpg" },
+        { "src": "https://rapidwoo.com/demo/store-1/product-images/band-3.jpg" }
+      ],
+      "extra_images_enabled": true,
+      "description": "<p>Breathable silicone band with secure pin-and-tuck closure. Fits most smartwatches.</p>",
+      "short_description": "Comfortable sport band.",
+      "type": "simple",
+      "manage_stock": true,
+      "stock_quantity": 70,
+      "weight": "0.15",
+      "dimensions": { "length": "9.5", "width": "0.9", "height": "0.2" },
+      "shipping_class": "letter",
+      "featured": false,
+      "sold_individually": false,
+      "hidden": false
+    }
+	
+
+  ]
+}
