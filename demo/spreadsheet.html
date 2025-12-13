@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RapidWoo - Spreadsheet Editor</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --primary: #1a73e8;
+  --border: #dadce0;
+  --header-bg: #f8f9fa;
+  --hover: #f1f3f4;
+  --selected: #e8f0fe;
+  --text: #202124;
+  --text-light: #5f6368;
+}
+body {
+  font-family: 'Roboto', 'Arial', sans-serif;
+  background: #fff;
+  color: var(--text);
+  overflow: hidden;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  background: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text);
+  margin-left: 50px;
+}
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
+}
+.doc-title {
+  font-size: 18px;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: text;
+}
+.doc-title:hover {
+  border-color: var(--border);
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: white;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  opacity: 0.6;
+}
+.btn:hover {
+  background: var(--hover);
+  border-color: #dadce0;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background: #1765cc;
+  border-color: #1765cc;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--header-bg);
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.toolbar-group {
+  display: flex;
+  gap: 4px;
+  padding: 0 8px;
+  border-right: 1px solid var(--border);
+}
+.toolbar-group:last-child {
+  border-right: none;
+}
+.toolbar-btn {
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: not-allowed;
+  font-size: 13px;
+  color: var(--text);
+  transition: all 0.15s;
+  opacity: 0.6;
+}
+.toolbar-btn:hover {
+  background: var(--hover);
+}
+.toolbar-btn.active {
+  background: var(--selected);
+  border-color: var(--primary);
+}
+.spreadsheet-container {
+  height: calc(100vh - 130px);
+  overflow: auto;
+  position: relative;
+}
+.spreadsheet {
+  border-collapse: collapse;
+  width: 100%;
+  background: white;
+  table-layout: fixed;
+}
+.spreadsheet thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--header-bg);
+}
+.spreadsheet th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--header-bg);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+.spreadsheet th:hover {
+  background: #e8eaed;
+}
+.col-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+}
+.col-resize-handle:hover {
+  background: var(--primary);
+}
+.sort-indicator {
+  display: inline-block;
+  margin-left: 4px;
+  opacity: 0.6;
+}
+.spreadsheet td {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  background: white;
+  cursor: cell;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.spreadsheet tr:hover td {
+  background: #f8f9fa;
+}
+.spreadsheet tr.selected td {
+  background: var(--selected);
+}
+.cell-edit {
+  width: 100%;
+  border: 2px solid var(--primary);
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.row-number {
+  background: var(--header-bg);
+  text-align: center;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  width: 50px;
+  min-width: 50px;
+  position: sticky;
+  left: 0;
+  z-index: 5;
+}
+.row-number:hover {
+  background: #e8eaed;
+}
+.col-checkbox {
+  width: 40px;
+  min-width: 40px;
+  text-align: center;
+  position: sticky;
+  left: 50px;
+  background: white;
+  z-index: 5;
+}
+.spreadsheet thead .col-checkbox {
+  background: var(--header-bg);
+}
+.spreadsheet tr:hover .col-checkbox {
+  background: #f8f9fa;
+}
+.spreadsheet tr.selected .col-checkbox {
+  background: var(--selected);
+}
+.col-id { width: 100px; }
+.col-title { width: 250px; }
+.col-sku { width: 150px; }
+.col-type { width: 100px; }
+.col-price { width: 100px; }
+.col-sale-price { width: 100px; }
+.col-stock { width: 120px; }
+.col-categories { width: 180px; }
+.col-tags { width: 180px; }
+.col-image { width: 200px; }
+.status-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.status-badge.variable {
+  background: #e8eaf6;
+  color: #5e35b1;
+}
+.status-badge.simple {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+.status-badge.instock {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.status-badge.outofstock {
+  background: #ffebee;
+  color: #c62828;
+}
+.status-badge.backorder {
+  background: #fff3e0;
+  color: #e65100;
+}
+.variations-info {
+  margin-left: 6px;
+  font-size: 11px;
+  color: var(--text-light);
+}
+.context-menu {
+  position: fixed;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  padding: 4px 0;
+  min-width: 180px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+  transition: all 0.15s;
+}
+.context-menu.show {
+  opacity: 1;
+  pointer-events: all;
+  transform: scale(1);
+}
+.context-menu-item {
+  padding: 10px 16px;
+  cursor: not-allowed;
+  font-size: 14px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.6;
+}
+.context-menu-item:hover {
+  background: var(--hover);
+}
+.context-menu-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  font-size: 16px;
+  font-weight: 500;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.loading.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #323232;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  font-size: 14px;
+  z-index: 3000;
+  opacity: 0;
+  transition: all 0.3s;
+  max-width: 500px;
+  text-align: center;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.stats {
+  display: flex;
+  gap: 16px;
+  padding: 6px 16px;
+  background: var(--header-bg);
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-light);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+.stat-item {
+  display: flex;
+  gap: 4px;
+}
+.stat-item strong {
+  color: var(--text);
+}
+</style>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">
+     
+      
+    </div>
+    <div class="doc-title" contenteditable="false">Spreadsheet</div>
+  </div>
+  <div class="header-right">
+    <button class="btn" id="btnImport">📥 Import</button>
+    <button class="btn" id="btnExport">📤 Export</button>
+    <button class="btn btn-primary" id="btnSave">💾 Save to WooCommerce</button>
+  </div>
+</div>
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-group">
+    <button class="toolbar-btn" id="btnAddRow">➕ Add Row</button>
+    <button class="toolbar-btn" id="btnDeleteRow">🗑️ Delete</button>
+    <button class="toolbar-btn" id="btnDuplicate">📑 Duplicate</button>
+  </div>
+  <div class="toolbar-group">
+    <button class="toolbar-btn" id="btnUndo">↶ Undo</button>
+    <button class="toolbar-btn" id="btnRedo">↷ Redo</button>
+  </div>
+  <div class="toolbar-group">
+    <button class="toolbar-btn" id="btnFilter">🔍 Filter</button>
+    <button class="toolbar-btn" id="btnSort">⬍ Sort</button>
+  </div>
+</div>
+<!-- Stats Bar -->
+<div class="stats">
+  <div class="stat-item">
+    <span>Total Products:</span>
+    <strong id="rowCount">0</strong>
+  </div>
+  <div class="stat-item">
+    <span>Selected:</span>
+    <strong id="selectedCount">0</strong>
+  </div>
+</div>
+<!-- Spreadsheet -->
+<div class="spreadsheet-container">
+  <table class="spreadsheet">
+    <thead>
+      <tr>
+        <th class="row-number">#</th>
+        <th class="col-checkbox"><input type="checkbox" id="selectAll" disabled></th>
+        <th class="col-id" data-col="id">ID <span class="sort-indicator"></span></th>
+        <th class="col-title" data-col="title">Title <span class="sort-indicator"></span></th>
+        <th class="col-sku" data-col="sku">SKU <span class="sort-indicator"></span></th>
+        <th class="col-type" data-col="type">Type <span class="sort-indicator"></span></th>
+        <th class="col-price" data-col="regular_price">Price <span class="sort-indicator"></span></th>
+        <th class="col-sale-price" data-col="sale_price">Sale Price <span class="sort-indicator"></span></th>
+        <th class="col-stock" data-col="stock_status">Stock <span class="sort-indicator"></span></th>
+        <th class="col-categories" data-col="categories">Categories <span class="sort-indicator"></span></th>
+        <th class="col-tags" data-col="tags">Tags <span class="sort-indicator"></span></th>
+        <th class="col-image" data-col="image">Image URL <span class="sort-indicator"></span></th>
+      </tr>
+    </thead>
+    <tbody id="spreadsheetBody"></tbody>
+  </table>
+</div>
+<!-- Context Menu -->
+<div class="context-menu" id="contextMenu">
+  <div class="context-menu-item" data-action="edit">✏️ Edit Cell</div>
+  <div class="context-menu-item" data-action="copy">📋 Copy</div>
+  <div class="context-menu-item" data-action="paste">📄 Paste</div>
+  <div class="context-menu-divider"></div>
+  <div class="context-menu-item" data-action="duplicate">📑 Duplicate Row</div>
+  <div class="context-menu-item" data-action="delete">🗑️ Delete Row</div>
+</div>
+<!-- Loading -->
+<div class="loading" id="loading">
+  Loading products...
+</div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+<!-- Hidden File Input -->
+<input type="file" id="fileInput" accept=".json" style="display: none;">
+<script>
+// Spreadsheet Editor Class
+class SpreadsheetEditor {
+  constructor() {
+    this.products = [];
+    this.selectedRows = new Set();
+    this.currentSort = { column: null, direction: 'asc' };
+    this.clipboard = null;
+    this.editingCell = null;
+    this.init();
+  }
+  async init() {
+    await this.loadProducts();
+    this.render();
+    this.bindEvents();
+    // Listen for real-time updates
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'rapidwoo_products' && Array.isArray(event.data.products)) {
+        this.products = event.data.products;
+        this.render();
+        this.showToast(`Updated with ${this.products.length} products`);
+      }
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'rapidwoo_products') {
+        try {
+          const data = JSON.parse(event.newValue || '{}');
+          if (Array.isArray(data.products)) {
+            this.products = data.products;
+            this.render();
+            this.showToast(`Updated with ${this.products.length} products`);
+          }
+        } catch (error) {
+          console.error('Storage update error:', error);
+        }
+      }
+    });
+  }
+  async loadProducts() {
+    this.showLoading(true);
+    const MAX_RETRIES = 5;
+    const RETRY_DELAY = 100;
+    let attempts = 0;
+    const tryLoad = async () => {
+      try {
+        const saved = localStorage.getItem('rapidwoo_products');
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (Array.isArray(data.products) && data.products.length > 0) {
+            this.products = data.products;
+            this.showToast(`Loaded ${this.products.length} products from editor`);
+            return true;
+          }
+        }
+        const response = await fetch('./products.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Failed to fetch demo products');
+        const data = await response.json();
+        if (Array.isArray(data.products)) {
+          this.products = data.products;
+          this.showToast(`Loaded ${this.products.length} demo products`);
+          return true;
+        }
+        throw new Error('No valid products found');
+      } catch (error) {
+        console.error('Load attempt failed:', error);
+        return false;
+      }
+    };
+    while (attempts < MAX_RETRIES) {
+      if (await tryLoad()) break;
+      attempts++;
+      if (attempts < MAX_RETRIES) {
+        await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      }
+    }
+    if (this.products.length === 0) {
+      this.showToast('No products found. Email hello@rapidwoo.com for $99 setup.', 'error');
+    }
+    this.showLoading(false);
+  }
+  render() {
+    const tbody = document.getElementById('spreadsheetBody');
+    tbody.innerHTML = '';
+    this.products.forEach((product, index) => {
+      const row = this.createRow(product, index);
+      tbody.appendChild(row);
+    });
+    this.updateStats();
+  }
+  createRow(product, index) {
+    const tr = document.createElement('tr');
+    tr.dataset.index = index;
+    if (this.selectedRows.has(index)) {
+      tr.classList.add('selected');
+    }
+    const tdNum = document.createElement('td');
+    tdNum.className = 'row-number';
+    tdNum.textContent = index + 1;
+    tr.appendChild(tdNum);
+    const tdCheck = document.createElement('td');
+    tdCheck.className = 'col-checkbox';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = this.selectedRows.has(index);
+    checkbox.dataset.index = index;
+    checkbox.disabled = true;
+    tdCheck.appendChild(checkbox);
+    tr.appendChild(tdCheck);
+    const columns = [
+      { key: 'id', class: 'col-id' },
+      { key: 'title', class: 'col-title' },
+      { key: 'sku', class: 'col-sku' },
+      { key: 'type', class: 'col-type', format: this.formatType.bind(this) },
+      { key: 'regular_price', class: 'col-price', format: this.formatPrice },
+      { key: 'sale_price', class: 'col-sale-price', format: this.formatPrice },
+      { key: 'stock_status', class: 'col-stock', format: this.formatStock },
+      { key: 'categories', class: 'col-categories', format: this.formatArray },
+      { key: 'tags', class: 'col-tags', format: this.formatArray },
+      { key: 'image', class: 'col-image' }
+    ];
+    columns.forEach(col => {
+      const td = document.createElement('td');
+      td.className = col.class;
+      td.dataset.col = col.key;
+      td.dataset.index = index;
+      const value = product[col.key];
+      if (col.format) {
+        td.innerHTML = col.format(value, product);
+      } else {
+        td.textContent = value || '';
+      }
+      tr.appendChild(td);
+    });
+    return tr;
+  }
+  formatType(value, product) {
+    const type = value || 'simple';
+    let html = `<span class="status-badge ${type}">${type}</span>`;
+    if (type === 'variable' && product.variations) {
+      html += `<span class="variations-info">${product.variations.length} variants</span>`;
+    }
+    return html;
+  }
+  formatPrice(value) {
+    return value ? `$${parseFloat(value).toFixed(2)}` : '';
+  }
+  formatStock(value) {
+    const status = value || 'instock';
+    const label = status === 'instock' ? 'In Stock' : status === 'outofstock' ? 'Out of Stock' : 'On Backorder';
+    return `<span class="status-badge ${status}">${label}</span>`;
+  }
+  formatArray(value) {
+    return Array.isArray(value) ? value.join(', ') : '';
+  }
+  bindEvents() {
+    const showRequestMessage = () => {
+      this.showToast('Full editor functions available upon request—email hello@rapidwoo.com for $99 setup.', 'info');
+    };
+    // Header buttons
+    document.getElementById('btnImport').addEventListener('click', showRequestMessage);
+    document.getElementById('btnExport').addEventListener('click', showRequestMessage);
+    document.getElementById('btnSave').addEventListener('click', showRequestMessage);
+    // Toolbar buttons
+    document.getElementById('btnAddRow').addEventListener('click', showRequestMessage);
+    document.getElementById('btnDeleteRow').addEventListener('click', showRequestMessage);
+    document.getElementById('btnDuplicate').addEventListener('click', showRequestMessage);
+    document.getElementById('btnUndo').addEventListener('click', showRequestMessage);
+    document.getElementById('btnRedo').addEventListener('click', showRequestMessage);
+    document.getElementById('btnFilter').addEventListener('click', showRequestMessage);
+    document.getElementById('btnSort').addEventListener('click', showRequestMessage);
+    // Select all checkbox
+    document.getElementById('selectAll').addEventListener('change', showRequestMessage);
+    // Cell clicks
+    document.getElementById('spreadsheetBody').addEventListener('click', (e) => {
+      if (e.target.type === 'checkbox') {
+        showRequestMessage();
+        return;
+      }
+      const td = e.target.closest('td[data-col]');
+      if (td) {
+        showRequestMessage();
+      }
+    });
+    // Column header sorting
+    document.querySelectorAll('th[data-col]').forEach(th => {
+      th.addEventListener('click', showRequestMessage);
+    });
+    // Context menu
+    document.getElementById('spreadsheetBody').addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const td = e.target.closest('td[data-col]');
+      if (td) {
+        this.showContextMenu(e.pageX, e.pageY, td);
+      }
+    });
+    // Hide context menu on click outside
+    document.addEventListener('click', () => {
+      document.getElementById('contextMenu').classList.remove('show');
+    });
+    // Context menu actions
+    document.querySelectorAll('.context-menu-item').forEach(item => {
+      item.addEventListener('click', showRequestMessage);
+    });
+  }
+  showContextMenu(x, y, cell) {
+    const menu = document.getElementById('contextMenu');
+    menu.style.left = `${x}px`;
+    menu.style.top = `${y}px`;
+    menu.classList.add('show');
+    this.editingCell = cell;
+  }
+  showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    if (type === 'error') {
+      toast.style.background = '#dc2626';
+    } else if (type === 'info') {
+      toast.style.background = '#2563eb';
+    }
+    setTimeout(() => {
+      toast.classList.remove('show');
+      toast.style.background = '#323232';
+    }, 3000);
+  }
+  showLoading(show) {
+    const loading = document.getElementById('loading');
+    if (show) {
+      loading.classList.add('show');
+    } else {
+      loading.classList.remove('show');
+    }
+  }
+  updateStats() {
+    document.getElementById('rowCount').textContent = this.products.length;
+    document.getElementById('selectedCount').textContent = this.selectedRows.size;
+  }
+}
+const spreadsheet = new SpreadsheetEditor();
+</script>
+</body>
+</html>

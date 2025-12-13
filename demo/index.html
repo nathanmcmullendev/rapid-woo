@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JHE179GXX5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JHE179GXX5');
+</script>
+   
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<meta name="theme-color" content="#0f172a">
+
+<title>RapidWoo Product Editor</title>
+
+<!-- Import modular CSS -->
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+
+<style>
+/* ========================================
+   EDITOR-SPECIFIC STYLES
+   ======================================== */
+
+.fpe-wrap {
+  max-width: 1200px;
+  margin: 40px auto 24px;
+  padding: 0 16px;
+}
+
+.fpe-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.fpe-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fpe-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fpe-card {
+  margin-bottom: 10px;
+}
+
+.fpe-pad {
+  padding: 12px;
+}
+
+.fpe-meta {
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.fpe-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.fpe-table-wrap.has-bulk-actions {
+  border-radius: 0 0 4px 4px;
+  border-top: none;
+}
+
+.fpe-products-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.fpe-products-table th {
+  position: sticky;
+  top: 0;
+  background: var(--table-head);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 12px;
+  color: #3c434a;
+  padding-bottom:10px;
+  z-index: 1;
+}
+
+.fpe-products-table th.hidden {
+  display: none;
+}
+
+.fpe-products-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 2px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.fpe-products-table td.hidden {
+  display: none;
+}
+
+.fpe-products-table tr:nth-child(odd) {
+  background: #fff;
+}
+
+.fpe-products-table tr:nth-child(even) {
+  background: #fbfbfb;
+}
+
+.fpe-products-table tr.selected {
+  background: #eef6ff !important;
+}
+
+.fpe-products-table tr.hidden-product {
+  opacity: 0.4;
+}
+
+.fpe-products-table tr.hidden-product td {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.fpe-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+.fpe-cell-edit[contenteditable="true"] {
+  outline: 2px solid transparent;
+  border-radius: 2px;
+  min-width: 80px;
+  padding: 4px 6px;
+  transition: all 0.2s;
+  cursor: text;
+  border: 1px dashed #cbd5e1;
+  background: #fafbfc;
+}
+
+.fpe-cell-edit[contenteditable="true"]:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.fpe-cell-edit[contenteditable="true"]:focus {
+  outline: 2px solid var(--brand);
+  background: #eef6ff;
+  border-color: var(--brand);
+}
+
+.fpe-products-table select.fpe-select {
+  border: 1px solid #cbd5e1;
+  outline: 1px solid #cbd5e1;
+  background: #fafbfc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fpe-products-table select.fpe-select:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.fpe-products-table select.fpe-select:focus {
+  outline: 2px solid var(--brand);
+  border-color: var(--brand);
+  background: #eef6ff;
+}
+
+.fpe-row-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.fpe-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  transition: transform 0.2s;
+}
+
+.fpe-icon-btn:hover {
+  transform: scale(1.2);
+}
+
+.bulk-actions-bar {
+  border: 1px solid var(--line);
+  border-bottom: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.bulk-actions-bar .bulk-cell {
+  padding: 10px 8px;
+  font-size: 14px;
+  border-right: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+}
+
+.bulk-actions-bar .bulk-cell:last-child {
+  border-right: none;
+}
+
+.bulk-actions-bar .bulk-cell.checkbox {
+  min-width: 40px;
+  justify-content: center;
+}
+
+.bulk-actions-bar .bulk-cell.actions {
+  flex: 1;
+  gap: 8px;
+}
+
+.shop-controls {
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	flex-wrap: wrap;
+	border: 1px solid #e0e0e0;
+	padding: 8px 12px;
+	border-radius: 4px;
+	background: #f9f9f9;
+	margin-right: 20px;
+}
+
+.shop-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+}
+
+.shop-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--brand);
+}
+
+.shop-toggle label {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+/* ❌ COMMENT OUT this entire block (old left-slide panel) */
+/*
+.fpe-panel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 420px;
+  height: 100vh;
+  background: #fff;
+  border-right: 1px solid var(--line);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  transform: translateX(-100%);
+  transition: transform 0.2s ease;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+}
+
+.fpe-panel.open {
+  transform: translateX(0);
+}
+
+.fpe-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+}
+
+.panel-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--line);
+  background: #fafbfd;
+}
+
+*/
+
+
+.fpe-panel-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.panel-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: #fff;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.fpe-section {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  margin-bottom: 10px;
+}
+
+.fpe-section .sec-h {
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  background: #fafbfc;
+}
+
+.fpe-section .sec-h:hover {
+  background: #f0f0f1;
+}
+
+.fpe-section .sec-h::after {
+  content: "▼";
+  font-size: 10px;
+  color: #666;
+  transition: transform 0.2s;
+}
+
+.fpe-section.open .sec-h::after {
+  transform: rotate(-180deg);
+}
+
+.fpe-section .sec-b {
+  display: none;
+  border-top: 1px solid var(--line);
+  padding: 10px 12px;
+}
+
+.fpe-section.open .sec-b {
+  display: block;
+}
+
+.fpe-field {
+  margin-bottom: 10px;
+}
+
+.fpe-field label {
+  display: block;
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.fpe-inline {
+  display: flex;
+  gap: 8px;
+}
+
+.fpe-inline .fpe-field {
+  flex: 1;
+}
+
+.shop-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 32px;
+}
+
+.shop-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  grid-column: 1 / -1;
+}
+
+.shop-empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+/* Image Upload Styles */
+.image-preview-container {
+  position: relative;                  /* needed for the drop hint overlay */
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+/* When something is dragged over the zone */
+.image-preview-container.drop-active {
+  border-color: var(--brand);
+  background: #eef6ff;
+}
+
+/* Overlay hint while dragging */
+.image-preview-container.drop-active::after {
+  content: 'Drop image to upload';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: var(--brand);
+  background: rgba(255,255,255,.7);
+  border-radius: 8px;
+}
+
+
+
+/* Persistent signifier (shown when no image present) */
+.image-preview-container:not(:has(img[style*="display: block"]))::before {
+  content: '📁  Drag & drop an image, or click to upload';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 8px 12px;
+  color: #64748b;              /* slate-500 */
+  font-size: 13px;
+  line-height: 1.3;
+  opacity: .9;
+  pointer-events: none;        /* allow clicks through */
+}
+
+/* Slightly stronger on hover (no image) */
+.image-preview-container:not(:has(img[style*="display: block"])):hover::before {
+  color: #475569;              /* slate-600 */
+  opacity: 1;
+}
+
+/* While dragging, override the hint text */
+.image-preview-container.drop-active::before {
+  content: '⬆️  Release to upload';
+  color: var(--brand);
+}
+
+
+.image-preview-container:has(img[style*="display: block"]) {
+width: 300px;
+  background: transparent;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+
+#image-preview {
+  object-fit: contain;
+  max-height: 300px;
+}
+
+#btn-upload-image:hover {
+  background-color: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+#btn-upload-image:active {
+  transform: translateY(0);
+}
+
+#btn-upload-image:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .fpe-wrap {
+    margin-top: 20px;
+  }
+
+  .fpe-panel {
+    width: 100%;
+  }
+
+  .bulk-actions-bar {
+    flex-wrap: wrap;
+  }
+
+  .bulk-actions-bar .bulk-cell.actions {
+    flex: 100%;
+    border-top: 1px solid var(--line);
+  }
+
+  .shop-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 20px;
+  }
+}
+
+#fpe-panel-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.06);
+  z-index: 1999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+#fpe-panel-backdrop.show{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fpe-row-actions { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.fpe-row-actions .icon-group { 
+  display: inline-flex; 
+  gap: 8px; 
+  margin-right: 4px; 
+}
+
+:root { 
+  --select-col-w: 40px; 
+}
+
+.bulk-actions-bar .bulk-cell.checkbox{
+  width: var(--select-col-w);
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.fpe-products-table th:first-child,
+.fpe-products-table td:first-child{
+  width: var(--select-col-w) !important;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+
+.fpe-products-table th:first-child input[type="checkbox"],
+.fpe-products-table td:first-child input[type="checkbox"]{
+  margin: 0;
+}
+
+.fpe-products-table thead th:first-child input[type="checkbox"],
+#select-all {
+  display: none !important;
+}
+
+.fpe-products-table thead th:first-child {
+  width: var(--select-col-w, 40px) !important;
+}
+
+.fpe-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+}
+
+
+/* ===== Full-screen editor panel (toggle via body.fpe-full) ===== */
+body.fpe-full {
+  overflow: hidden;
+}
+body.fpe-full #fpe-panel {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  transform: none !important;      /* ignore slide-in transform */
+  border-right: 0;
+  box-shadow: none;
+  z-index: 2000;                   /* stays above the backdrop (1999) */
+}
+body.fpe-full #fpe-panel .panel-body {
+  overflow: auto !important;
+  max-height: calc(100vh - 110px); /* header+footer space */
+}
+body.fpe-full #fpe-panel .panel-footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+}
+
+/* Small helper to hide/show the two buttons */
+#btn-fpe-exit { display: none; }
+body.fpe-full #btn-fpe-full { display: none !important; }
+body.fpe-full #btn-fpe-exit { display: inline-block !important; }
+
+
+
+
+/* Floating re-upload button (works on primary + gallery slots) */
+.reupload-btn{
+  position:absolute;
+  top:8px; right:8px;
+  width:32px; height:32px;
+  border:1px solid #cbd5e1;
+  border-radius:999px;
+  background:#ffffffcc;
+  backdrop-filter: blur(2px);
+  display:grid; place-items:center;
+  font-size:16px;
+  line-height:1;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.06);
+  transition:transform .15s ease, opacity .15s ease, background .15s ease;
+  opacity:.9;
+}
+.reupload-btn:hover{ transform:scale(1.05); opacity:1; }
+.image-preview-container:hover .reupload-btn{ opacity:1; }
+
+/* Keep the “drop to upload” highlight */
+.image-preview-container.drop-active{
+  border-color: var(--brand);
+  background:#eef6ff;
+}
+.image-preview-container.drop-active::after{
+  content:'⬆️  Release to upload';
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  font-weight:700; color:var(--brand);
+  background:rgba(255,255,255,.7);
+  border-radius:8px;
+}
+
+
+
+
+/* --- Gallery URL input styling to match primary image field --- */
+.rw-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+}
+.rw-url-wrap{
+  position:relative;
+  flex:1 1 auto;
+}
+.rw-url-input{
+  width:100%;
+  padding-right:70px;  /* room for the 'Optional' badge, same as primary */
+}
+.rw-url-optional{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#999;
+  font-size:12px;
+  pointer-events:none;
+}
+
+/* make the tiny icon button align nicely next to input */
+.rw-icon{
+  display:flex; align-items:center; justify-content:center;
+  width:auto; min-width:40px; padding:0 10px;
+}
+.rw-remove{
+  margin-left:8px;
+}
+
+@media (max-width: 520px){
+  /* stack buttons under input when narrow */
+  .rw-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .rw-remove{ margin-left:0; }
+}
+
+
+/* Gallery URL under-image layout */
+.rw-slot{ margin-top:8px; }
+.rw-url-wrap{ position:relative; }
+.rw-url-input{ width:100%; padding-right:70px; }   /* matches primary field */
+.rw-url-optional{
+  position:absolute; right:10px; top:50%;
+  transform:translateY(-50%); color:#999; font-size:12px; pointer-events:none;
+}
+
+/* Buttons on their own row, right-aligned */
+.rw-actions{
+  display:flex; gap:8px; justify-content:flex-end; margin-top:6px;
+}
+.rw-icon{ display:flex; align-items:center; justify-content:center; min-width:40px; padding:0 10px; }
+
+</style>
+
+
+<style>
+  /* Full-screen slide-out editor panel */
+  #fpe-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;           /* full width */
+    max-width: 100vw;       /* enforce full width */
+    height: 100vh;          /* full height */
+    background: #fff;
+    box-shadow: -12px 0 24px rgba(0,0,0,.12);
+    z-index: 2000;
+    transform: translateX(100%); /* off-screen by default */
+    transition: transform .25s ease;
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* sticky-like header/footer */
+    overflow: hidden; /* container manages scroll on content area below */
+  }
+  #fpe-panel.open {
+    transform: translateX(0);
+  }
+
+  /* Header + footer stay visible */
+  #fpe-panel .fpe-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #fff;
+    border-bottom: 1px solid var(--line, #e5e7eb);
+  }
+  #fpe-panel .fpe-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    background: #fff;
+    border-top: 1px solid var(--line, #e5e7eb);
+  }
+
+  /* Scroll only the content section between header/footer */
+  #fpe-panel .fpe-content {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Optional: body lock while panel open */
+  body.fpe-lock {
+    overflow: hidden;
+    touch-action: none;
+  }
+  
+  
+  
+  /* ===== RapidWoo: image URL + actions layout (primary + gallery) ===== */
+
+/* stack the URL row and the buttons row; buttons will be under the input */
+.rw-slot{
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 8px;
+  margin-top: 8px; /* space below the image preview */
+}
+
+/* URL input behaves like the primary field (with "Optional" on the right) */
+.rw-url-wrap{ position: relative; }
+.rw-url-input{
+  width: 100%;
+  padding-right: 70px; /* room for "Optional" */
+}
+
+/* "Optional" hint (same look as the primary image URL) */
+.rw-url-optional{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+/* action buttons row: left aligned */
+.rw-actions{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;  
+}
+
+/* small icon button (upload) and standard button (remove) */
+.button.rw-icon{ padding: 6px 10px; }
+.button.rw-remove{ /* inherits your normal button styling */ }
+
+/* Defensive override in case a container tries to push actions to the right */
+.fpe-field .rw-actions{ justify-content: flex-start; }
+
+
+
+
+.stock-badge { display:inline-block; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+.stock-badge.instock { background:#e8f7ec; color:#1b8f3a; }
+.stock-badge.outofstock { background:#fde8e8; color:#b91c1c; }
+.stock-badge.onbackorder { background:#fff7e6; color:#b45309; }
+
+.product-modal.open { display:block !important; }
+
+
+
+
+
+
+
+
+
+/* ========================================
+   MOBILE RESPONSIVE IMPROVEMENTS
+   ======================================== */
+
+@media (max-width: 768px) {
+  .fpe-wrap {
+    margin-top: 20px;
+    padding: 0 12px;
+  }
+
+  .fpe-title {
+    font-size: 22px;
+    margin: 16px 0;
+  }
+
+  /* Stack toolbar buttons */
+  .fpe-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fpe-toolbar {
+    flex-direction: column;
+  }
+
+  .fpe-toolbar .button,
+  .fpe-toolbar label.button {
+    width: 100%;
+    text-align: center;
+    padding: 12px 16px;
+  }
+
+  /* Make toggle controls more compact */
+  .fpe-card .shop-controls {
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .shop-toggle {
+    font-size: 12px;
+  }
+
+  /* Table - force horizontal scroll */
+  .fpe-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fpe-products-table {
+    min-width: 800px; /* Force horizontal scroll instead of cramping */
+  }
+
+  /* Bulk actions - stack if needed */
+  .bulk-actions-bar {
+    flex-wrap: wrap;
+  }
+
+  .bulk-actions-bar .bulk-cell.actions {
+    width: 100%;
+    border-top: 1px solid var(--line);
+    padding: 12px 8px;
+  }
+
+  /* Edit panel - full screen on mobile */
+  #fpe-panel.open {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .fpe-panel-header {
+    padding: 14px 12px;
+  }
+
+  .panel-body {
+    padding: 16px 12px;
+  }
+
+  /* Make form fields stack better */
+  .fpe-inline {
+    flex-direction: column;
+  }
+
+  /* Bigger touch targets for icon buttons */
+  .fpe-icon-btn {
+    padding: 8px;
+    font-size: 20px;
+  }
+
+  /* Shop preview modal adjustments */
+  .shop-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .shop-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .shop-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Product iframe modal */
+  #product-iframe-modal .modal-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  #pim-frame {
+    height: calc(100vh - 60px) !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .fpe-meta {
+    font-size: 13px;
+  }
+
+  .shop-toggle label {
+    font-size: 11px;
+  }
+
+  .fpe-products-table {
+    font-size: 13px;
+  }
+
+  .fpe-thumb {
+    width: 32px;
+    height: 32px;
+  }
+  
+  
+  
+}
+/* Fix Shop Preview Modal header on mobile */
+.shop-modal .shop-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: nowrap; /* prevent wrapping */
+}
+
+.shop-modal .shop-header > h2 {
+  flex-shrink: 0;
+}
+
+.shop-modal .shop-header > div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Keep close button in top-right on mobile */
+.shop-modal .modal-close {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  z-index: 10;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.shop-modal .modal-close:hover {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+/* Mobile adjustments for shop preview */
+@media (max-width: 768px) {
+  .shop-modal .shop-header {
+    padding: 16px;
+    padding-right: 56px; /* make room for close button */
+  }
+
+  .shop-modal .shop-header h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .shop-controls {
+    width: 100%;
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .shop-toggle {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Make hero screenshot clickable with zoom indicator */
+.hero-visual {
+  position: relative;
+  cursor: zoom-in;
+}
+
+.hero-visual::after {
+  content: '🔍 Click to enlarge';
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hero-visual:hover::after {
+  opacity: 1;
+}
+
+/* Keep the feature image zoom icon */
+.feature-image {
+  cursor: zoom-in;
+  position: relative;
+}
+
+.feature-image::after {
+  content: '🔍';
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.feature-card:hover .feature-image::after {
+  opacity: 1;
+}
+
+
+
+/* Footer */
+.site-footer { 
+  background: #fff; 
+  border-top: 1px solid var(--line); 
+  padding: 40px 0; 
+  color: var(--muted); 
+}
+.footer-grid { 
+  display: grid; 
+  grid-template-columns: 1fr auto; 
+  align-items: center; 
+  gap: 24px; 
+}
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.footer-tagline {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+.foot-links { 
+  display: flex; 
+  gap: 20px; 
+  flex-wrap: wrap; 
+}
+.foot-links a { 
+  color: var(--muted); 
+  text-decoration: none; 
+  transition: color 0.2s;
+}
+.foot-links a:hover {
+  color: var(--brand);
+}
+
+/* Mobile Responsive */
+@media (max-width: 968px) {
+  .hero-wrap {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .hero-visual {
+    order: 2; /* Show text first on mobile */
+  }
+
+  .hero-content {
+    padding-right: 0;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .foot-links {
+    justify-content: center;
+  }
+}
+
+/* Spreadsheet Modal */
+.spreadsheet-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.spreadsheet-modal.show {
+  display: block;
+}
+
+.spreadsheet-modal iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.spreadsheet-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 80px;
+  z-index: 10000;
+  padding: 8px 16px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
+
+
+/* Spreadsheet Modal */
+.spreadsheet-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.spreadsheet-modal.show {
+  display: block;
+}
+
+.spreadsheet-modal iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.spreadsheet-close-btn-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 13px 18px;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+  border-radius: 0 0 8px 0;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spreadsheet-close-btn-overlay:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.5);
+}
+
+.spreadsheet-close-btn-overlay::before {
+  content: '←';
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+/* Spreadsheet Modal Close Button - Matches RapidWoo Style */
+.spreadsheet-close-btn-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+  padding: 8px 16px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spreadsheet-close-btn-overlay:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.4);
+}
+
+.spreadsheet-close-btn-overlay:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
+}
+
+.spreadsheet-close-btn-overlay::before {
+  content: '←';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .spreadsheet-close-btn-overlay {
+    padding: 10px 14px;
+    font-size: 13px;
+    top: 8px;
+    left: 8px;
+  }
+  
+  .spreadsheet-close-btn-overlay::before {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .spreadsheet-close-btn-overlay {
+    padding: 8px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  
+  /* Shorten text on very small screens */
+  .spreadsheet-close-btn-overlay span {
+    display: none;
+  }
+  
+  .spreadsheet-close-btn-overlay::after {
+    content: 'Back';
+    font-size: 12px;
+  }
+}
+
+
+</style>
+
+</head>
+
+<body>
+<!-- Header -->
+<header class="site-header">
+  <div class="header-container">
+    <a href="../index.html" class="site-logo" aria-label="RapidWoo Home">
+      <div class="logo-icon"></div>
+      <span>RapidWoo</span>
+    </a>
+
+    <nav class="primary-nav">
+      <a href="../index.html" class="nav-link">Home</a>
+      <a href="../shop.html" class="nav-link">Shop</a>
+      <a href="./index.html" class="nav-link">Editor</a>
+	  <a href="../contact.html" class="nav-link">Contact</a>
+    </nav>
+
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu-header">
+    <a href="../index.html" class="site-logo" aria-label="RapidWoo Home">
+      <div class="logo-icon"></div>
+      <span>RapidWoo</span>
+    </a>
+    <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+  </div>
+  <nav class="mobile-menu-nav">
+    <a href="../index.html" class="mobile-nav-link">Home</a>
+    <a href="../shop.html" class="mobile-nav-link">Shop</a>
+    <a href="./index.html" class="mobile-nav-link">Editor</a>
+	<a href="../contact.html" class="mobile-nav-link">Contact</a>
+  </nav>
+</div>
+
+<!-- Main Content -->
+<div class="fpe-wrap">
+  <h1 class="fpe-title">Products</h1>
+  
+  <div class="fpe-header">
+    <div class="fpe-toolbar">
+      <button id="btn-view-shop" class="button">🛒 View Shop</button>
+      <button id="btn-view-live-shop" class="button button-primary">Shop Settings</button>
+      <button id="btn-load-demo" class="button">📦 Load Demo Products</button>
+      <button id="btn-spreadsheet-modal" class="button">📊 Spreadsheet View</button>
+      <label class="button" for="file-import">📥 Import JSON</label>
+      <input id="file-import" type="file" accept=".json" style="display:none">
+      <button id="btn-download" class="button button-primary">📤 Export JSON</button>
+      <button id="btn-add" class="button">➕ Add New Product</button>
+    </div>
+  </div>
+
+  <div class="fpe-card fpe-pad">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div class="fpe-meta">Edit inline (click fields), or click ✏️ to open editor panel. Click 👁️ to preview.</div>
+      <div class="shop-controls" style="margin:0">
+        <div class="shop-toggle">
+          <input type="checkbox" id="toggle-home-image" checked>
+          <label for="toggle-home-image">Images</label>
+        </div>
+        <div class="shop-toggle">
+          <input type="checkbox" id="toggle-home-sku">
+          <label for="toggle-home-sku">SKU</label>
+        </div>
+        <div class="shop-toggle">
+          <input type="checkbox" id="toggle-home-price" checked>
+          <label for="toggle-home-price">Price</label>
+        </div>
+        <div class="shop-toggle">
+          <input type="checkbox" id="toggle-home-categories" checked>
+          <label for="toggle-home-categories">Categories</label>
+        </div>
+        <div class="shop-toggle">
+          <input type="checkbox" id="toggle-home-tags" checked>
+          <label for="toggle-home-tags">Tags</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  <div class="bulk-actions-bar" id="bulk-bar">
+    <div class="bulk-cell checkbox">
+      <input type="checkbox" id="bulk-select-all" class="fpe-checkbox" title="Select all">
+    </div>
+    <div class="bulk-cell actions">
+      <select id="bulk-action" class="fpe-select" style="width:auto;min-width:150px">
+        <option value="">Bulk actions</option>
+        <option value="delete">Move to Trash</option>
+        <option value="hide">Hide from Shop</option>
+        <option value="unhide">Show in Shop</option>
+      </select>
+      <button id="apply-bulk" class="button">Apply</button>
+    </div>
+  </div>
+
+<!-- Products Table -->
+<div class="fpe-table-wrap has-bulk-actions" id="table-wrap">
+  <table class="fpe-products-table">
+<thead>
+  <tr>
+    <th style="width:40px"><input type="checkbox" id="select-all" class="fpe-checkbox"></th>
+    <th style="width:70px" data-col="image">Image</th>
+    <th style="width:110px;text-align:center;" data-col="quick-actions" colspan="2">Actions</th>
+    <th data-col="name">Name</th>
+    <th data-col="sku">SKU</th>
+    <th style="width:150px" data-col="stock">Stock</th>
+    <th style="width:140px" data-col="price">Price</th>
+    <th data-col="categories">Categories</th>
+    <th data-col="tags">Tags</th>
+    <th style="width:240px" data-col="actions">Options</th>
+  </tr>
+</thead>
+    <tbody id="fpe-tbody"></tbody>
+  </table>
+</div>
+
+<!-- Side Panel for Editing -->
+<div class="fpe-panel" id="fpe-panel">
+<div class="fpe-panel-header">
+  <span class="header-title">Edit Product</span>
+  <div style="display:flex; gap:8px; align-items:center;">
+    <button id="fpe-save-top" class="button button-primary">Save Changes</button>
+    <button id="fpe-close" class="button">Close</button>
+  </div>
+</div>
+  
+  <div class="panel-body">
+    <!-- General Section -->
+    <div class="fpe-section open">
+      <div class="sec-h"><strong>General</strong></div>
+      <div class="sec-b">
+        <div class="fpe-field">
+          <label>Product Name</label>
+          <input id="fld-title" type="text">
+        </div>
+        <div class="fpe-field">
+          <label>Slug</label>
+          <input id="fld-slug" type="text" placeholder="auto-generated if empty">
+        </div>
+        <div class="fpe-field">
+          <label>SKU</label>
+          <input id="fld-sku" type="text">
+        </div>
+        
+        <!-- ENHANCED IMAGE SECTION -->
+        <div class="fpe-field">
+          <label>Product Image</label>
+          
+          <!-- Image Preview -->
+          <div class="image-preview-container" style="margin-bottom: 12px; position: relative;">
+  <img id="image-preview" 
+       src="" 
+       alt="Product preview" 
+       style="display: none; max-width: 100%; height: auto; border-radius: 8px; border: 2px solid #e5e7eb;">
+
+</div>
+
+           
+          <!-- Upload Button -->
+<!-- PRIMARY IMAGE CONTROLS (match gallery style) -->
+<div class="rw-slot">
+  <div class="rw-url-wrap">
+    <input id="fld-image" class="rw-url-input" type="text" placeholder="paste image URL">
+    <span class="rw-url-optional">Optional</span>
+  </div>
+  <div class="rw-actions">
+    <button id="btn-upload-image" type="button" class="button rw-icon" title="Upload">
+  <span>📤 Upload</span> 
+</button>
+    <button id="btn-clear-image"   type="button" class="button rw-remove" title="Clear"><span>Remove</span></button>
+  </div>
+</div>
+
+          
+          <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">
+            Upload a new image or paste an external URL. Supports JPG, PNG, WebP (max 5MB)
+          </small>
+        </div>
+        
+        <div class="fpe-field">
+          <label>Short Description</label>
+          <textarea id="fld-short"></textarea>
+        </div>
+        <div class="fpe-field">
+          <label>Description</label>
+          <textarea id="fld-desc"></textarea>
+        </div>
+        <div class="fpe-inline">
+          <div class="fpe-field">
+            <label>Categories (comma-separated)</label>
+            <input id="fld-cats" type="text">
+          </div>
+          <div class="fpe-field">
+            <label>Tags (comma-separated)</label>
+            <input id="fld-tags" type="text">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Section -->
+<!-- Price & Variations Section -->
+<div class="fpe-section">
+  <div class="sec-h"><strong>Price & Variations</strong></div>
+  <div class="sec-b">
+
+    <!-- Pricing -->
+    <div class="fpe-inline">
+      <div class="fpe-field">
+        <label>Regular Price ($)</label>
+        <input id="fld-reg" type="number" step="0.01">
+      </div>
+      <div class="fpe-field">
+        <label>Sale Price ($)</label>
+        <input id="fld-sale" type="number" step="0.01">
+      </div>
+    </div>
+
+    <!-- Variable Product Controls -->
+       <!-- Variable Product Controls -->
+    <div class="fpe-inline" style="margin-top:10px">
+      <div class="fpe-field">
+        <label>Product Type</label>
+        <select id="fld-type" class="fpe-select">
+          <option value="simple">Simple</option>
+          <option value="variable">Variable</option>
+        </select>
+      </div>
+
+      <div class="fpe-field">
+        <label>Main Attribute Name</label>
+        <input id="fld-attr-name" type="text" placeholder="Size" value="Size">
+      </div>
+
+      <div class="fpe-field">
+        <label>Preset Options</label>
+        <select id="fld-attr-preset" class="fpe-select">
+          <option value="S,M,L,XL">Sizes: S–XL</option>
+          <option value="XS,S,M,L,XL,XXL,3XL">Sizes: XS–3XL</option>
+          <option value="28,30,32,34,36,38">Numbers: 28–38</option>
+          <option value="custom">Custom…</option>
+        </select>
+      </div>
+
+      <div class="fpe-field">
+        <label>Attribute Options (comma-separated)</label>
+        <input id="fld-attr-options" type="text" placeholder="S, M, L, XL">
+      </div>
+
+      <div class="fpe-field">
+        <label>&nbsp;</label>
+        <button id="btn-generate-vars" class="button">Generate variations</button>
+      </div>
+
+      <div class="fpe-field">
+        <label>&nbsp;</label>
+        <button id="btn-generate-skus" class="button">Generate SKUs</button>
+      </div>
+    </div>
+
+
+    <!-- Variations Table (Woo-style) -->
+    <div class="fpe-field" id="var-wrap" style="margin-top:10px; display:none;">
+      <label>Variations</label>
+      <div style="overflow:auto;">
+        <table id="var-table" class="table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Option</th>
+              <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">SKU</th>
+              <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Regular ($)</th>
+              <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Sale ($)</th>
+              <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Stock</th>
+              <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Remove</th>
+            </tr>
+          </thead>
+          <tbody id="var-tbody"></tbody>
+        </table>
+      </div>
+      <small class="muted">Tip: click “Generate variations” after editing options. You can tweak each row below.</small>
+    </div>
+
+  </div>
+</div>
+
+
+
+    <!-- Inventory Section -->
+    <div class="fpe-section">
+      <div class="sec-h"><strong>Inventory</strong></div>
+      <div class="sec-b">
+        <div class="fpe-inline">
+          <div class="fpe-field">
+            <label>Stock Status</label>
+            <select id="fld-stock-status" class="fpe-select">
+              <option value="instock">In Stock</option>
+              <option value="outofstock">Out of Stock</option>
+              <option value="onbackorder">On Backorder</option>
+            </select>
+          </div>
+          <div class="fpe-field">
+            <label>Manage Stock?</label>
+            <select id="fld-manage" class="fpe-select">
+              <option value="true">Yes</option>
+              <option value="false" selected>No</option>
+            </select>
+          </div>
+          <div class="fpe-field">
+            <label>Stock Quantity</label>
+            <input id="fld-stock-qty" type="number">
+          </div>
+        </div>
+        <div class="fpe-inline">
+          <div class="fpe-field">
+            <label>Featured?</label>
+            <select id="fld-featured" class="fpe-select">
+              <option value="true">Yes</option>
+              <option value="false" selected>No</option>
+            </select>
+          </div>
+          <div class="fpe-field">
+            <label>Sold Individually?</label>
+            <select id="fld-sold" class="fpe-select">
+              <option value="true">Yes</option>
+              <option value="false" selected>No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shipping Section -->
+    <div class="fpe-section">
+      <div class="sec-h"><strong>Shipping</strong></div>
+      <div class="sec-b">
+        <div class="fpe-inline">
+          <div class="fpe-field">
+            <label>Weight (lbs)</label>
+            <input id="fld-weight" type="text">
+          </div>
+          <div class="fpe-field">
+            <label>Shipping Class</label>
+            <input id="fld-ship-class" type="text">
+          </div>
+        </div>
+        <div class="fpe-inline">
+          <div class="fpe-field">
+            <label>Length (in)</label>
+            <input id="fld-l" type="text">
+          </div>
+          <div class="fpe-field">
+            <label>Width (in)</label>
+            <input id="fld-w" type="text">
+          </div>
+          <div class="fpe-field">
+            <label>Height (in)</label>
+            <input id="fld-h" type="text">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="panel-footer">
+  <button id="fpe-cancel" class="button">Cancel</button>
+  <button id="fpe-apply" class="button button-primary">Save Changes</button>
+</div>
+</div>
+
+<!-- Shop Preview Modal -->
+<div class="shop-modal" id="shop-modal">
+  <div class="shop-modal-content">
+    <div class="shop-header">
+      <h2 style="margin:0;font-size:24px">Shop Preview</h2>
+
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div class="shop-controls">
+          <div class="shop-toggle">
+            <input type="checkbox" id="toggle-title" checked />
+            <label for="toggle-title">Show Titles</label>
+          </div>
+
+          <div class="shop-toggle">
+            <input type="checkbox" id="toggle-price" checked />
+            <label for="toggle-price">Show Prices</label>
+          </div>
+
+          <div class="shop-toggle">
+            <input type="checkbox" id="toggle-description" checked />
+            <label for="toggle-description">Show Description</label>
+          </div>
+
+          <!-- NEW -->
+          <div class="shop-toggle">
+            <input type="checkbox" id="toggle-stock" checked />
+            <label for="toggle-stock">Show Stock</label>
+          </div>
+
+          <!-- NEW -->
+          <div class="shop-toggle">
+            <input type="checkbox" id="toggle-add" checked />
+            <label for="toggle-add">Show Add</label>
+          </div>
+        </div>
+
+        <button class="modal-close" id="shop-close">✕</button>
+      </div>
+    </div>
+
+    <div class="shop-products-grid" id="shop-products-grid"></div>
+  </div>
+</div>
+
+
+
+<!-- Product IFRAME Modal (single source of truth: product.html) -->
+<div id="product-iframe-modal" class="product-modal" hidden>
+  <div class="modal-content" style="width:min(1100px,96vw);">
+    <div class="modal-header">
+      <h2 style="margin:0;font-size:18px">Product Preview</h2>
+      <button class="modal-close" id="pim-close">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0;">
+      <iframe id="pim-frame" title="Product preview"
+              loading="lazy"
+              style="display:block;width:100%;height:78vh;border:0;border-radius:0 0 8px 8px;"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Spreadsheet Modal -->
+<!-- Spreadsheet Modal -->
+<div class="spreadsheet-modal" id="spreadsheetModal">
+  <button class="spreadsheet-close-btn-overlay" id="closeSpreadsheet">
+    
+  </button>
+  <iframe id="spreadsheetFrame" src=""></iframe>
+</div>
+
+<!-- Hidden file input for image upload -->
+<input type="file" id="image-file-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display: none;">
+<!-- Compat stubs so editor.js can bind without errors (remain invisible) -->
+<div id="product-modal" class="product-modal" hidden style="display:none">
+  <button id="modal-close" type="button" aria-hidden="true" style="display:none"></button>
+</div>
+
+<div id="quickview-modal" class="modal" hidden style="display:none">
+  <button id="quickview-close" type="button" aria-hidden="true" style="display:none"></button>
+</div>
+
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="site-logo" aria-label="RapidWoo Home">
+          <div class="logo-icon"></div>
+          <span>RapidWoo</span>
+        </a>
+        <p class="footer-tagline">Clean WooCommerce storefronts with a lightning-fast editor.</p>
+      </div>
+      <div class="foot-links">
+        <a href="../index.html">Home</a>
+        <a href="../shop.html">Shop</a>
+        <a href="./index.html">Editor</a>
+        <a href="../contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+<!-- Import JavaScript modules -->
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/imageHandler.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script src="../assets/js/cart.js"></script>
+<script src="./editor.js"></script>
+
+<script>
+/* RapidWoo – open the side panel when ?open=<slug|id> is present */
+(function () {
+  const MAX_WAIT_MS = 6000;   // give editor.js time to boot
+  const RETRY_EVERY = 120;
+
+  function getKey() {
+    try { return new URL(location.href).searchParams.get('open'); }
+    catch { return null; }
+  }
+
+  function findIndex(products, key) {
+    if (!key) return -1;
+    const k = String(key).trim();
+    let i = products.findIndex(p => String(p.slug) === k);
+    if (i < 0) i = products.findIndex(p => String(p.id) === k);
+    return i;
+  }
+
+  let started = false;
+  async function attemptOpen() {
+    if (started) return;
+    const key = getKey();
+    if (!key) return;
+
+    const Storage   = window.RapidWoo && window.RapidWoo.Storage;
+    const openPanel = window.openPanel;
+
+    if (!Storage?.getProducts || typeof openPanel !== 'function') {
+      // retry until the editor is ready
+      return;
+    }
+
+    started = true;
+    try {
+      const data = await Storage.getProducts();
+      const products = Array.isArray(data?.products) ? data.products : [];
+      const idx = findIndex(products, key);
+
+      if (idx >= 0) {
+        // wait a tick so table rows exist, then open the panel
+        setTimeout(() => openPanel(idx), 0);
+      } else {
+        console.warn('Deep link key not found:', key);
+      }
+    } catch (e) {
+      console.error('Deep link failed:', e);
+    }
+  }
+
+  // keep retrying until ready or timeout
+  const t0 = Date.now();
+  const timer = setInterval(() => {
+    attemptOpen();
+    if (Date.now() - t0 > MAX_WAIT_MS || started) clearInterval(timer);
+  }, RETRY_EVERY);
+
+  // also try once DOM is ready and once products refresh
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attemptOpen, { once: true });
+  } else {
+    setTimeout(attemptOpen, 0);
+  }
+  window.addEventListener('rapidwoo:products:updated', attemptOpen, { once: true });
+})();
+</script>
+
+
+<script>
+/* RapidWoo – Unified Preview Handler */
+(function(){
+  const modal = document.getElementById('product-iframe-modal');
+  const frame = document.getElementById('pim-frame');
+  const closeBtn = document.getElementById('pim-close');
+
+  if (!modal || !frame) {
+    console.error('Preview modal elements not found');
+    return;
+  }
+
+  // Modal controls
+  function openModal(product){
+    if (!product) return;
+    console.log('Opening preview for:', product.title || product.id);
+    
+    const key = encodeURIComponent(product.slug || product.id || '');
+    frame.src = `../product.html?product=${key}&embedded=1`;
+    
+    modal.hidden = false;
+    modal.classList.add('open');
+    modal.style.display = 'block';
+    document.body.classList.add('modal-open');
+  }
+
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+    modal.hidden = true;
+    frame.src = 'about:blank';
+    document.body.classList.remove('modal-open');
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { 
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); 
+  });
+
+  // Get products from wherever they're available
+  async function getProducts(){
+    if (window.App?.products?.length) return window.App.products;
+    try {
+      const data = await window.RapidWoo?.Storage?.getProducts();
+      return data?.products || [];
+    } catch(e){ 
+      console.error('Failed to load products:', e);
+      return []; 
+    }
+  }
+
+  // Handle preview button clicks - uses CAPTURE phase to intercept early
+  document.addEventListener('click', async (ev) => {
+    const btn = ev.target.closest('button');
+    if (!btn) return;
+
+    // Check if this is an eye/preview button
+    const isEyeButton = 
+      btn.textContent.includes('👁') || 
+      btn.classList.contains('fpe-icon-preview') ||
+      (btn.title && btn.title.toLowerCase().includes('preview')) ||
+      (btn.getAttribute('aria-label') || '').toLowerCase().includes('preview');
+
+    if (!isEyeButton) return;
+
+    ev.preventDefault();
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
+
+    console.log('Preview button clicked');
+
+    // Find the row and get product index
+    const row = btn.closest('tr');
+    if (!row) {
+      console.warn('No row found for preview button');
+      return;
+    }
+
+    const products = await getProducts();
+    let product = null;
+
+    // Try to get product by data attributes
+    const idx = Number(row.dataset.index);
+    if (Number.isFinite(idx) && products[idx]) {
+      product = products[idx];
+    } else {
+      // Fallback: get by row position in tbody
+      const tbody = row.parentElement;
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const rowIndex = rows.indexOf(row);
+      if (rowIndex >= 0 && products[rowIndex]) {
+        product = products[rowIndex];
+      }
+    }
+
+    if (product) {
+      openModal(product);
+    } else {
+      console.warn('Product not found for row:', row);
+    }
+  }, true); // CAPTURE phase
+
+  // Debug helpers
+  window.__testPreview = async (index = 0) => {
+    const products = await getProducts();
+    if (products[index]) openModal(products[index]);
+  };
+})();
+</script>
+
+
+
+<script>
+// Spreadsheet Modal Handler
+const spreadsheetModal = document.getElementById('spreadsheetModal');
+const spreadsheetFrame = document.getElementById('spreadsheetFrame');
+const btnOpenSpreadsheet = document.getElementById('btn-spreadsheet-modal');
+const btnCloseSpreadsheet = document.getElementById('closeSpreadsheet');
+
+if (btnOpenSpreadsheet) {
+  btnOpenSpreadsheet.addEventListener('click', () => {
+    // Save products first
+    const App = window.App;
+    if (App && App.products) {
+      try {
+        const data = { products: App.products };
+        localStorage.setItem('rapidwoo_products', JSON.stringify(data));
+      } catch (e) {
+        console.error('Could not save:', e);
+      }
+    }
+    
+    // Open modal
+    spreadsheetFrame.src = './spreadsheet.html';
+    spreadsheetModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  });
+}
+
+if (btnCloseSpreadsheet) {
+  btnCloseSpreadsheet.addEventListener('click', () => {
+    spreadsheetModal.classList.remove('show');
+    spreadsheetFrame.src = '';
+    document.body.style.overflow = '';
+    
+    // Reload products from localStorage (in case they were edited in spreadsheet)
+    if (window.App && typeof window.App.products !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('rapidwoo_products');
+        if (saved) {
+          const data = JSON.parse(saved);
+          window.App.products = data.products || [];
+          if (typeof renderTable === 'function') {
+            renderTable();
+          }
+        }
+      } catch (e) {
+        console.error('Could not reload:', e);
+      }
+    }
+  });
+}
+</script>
+
+</body>
+</html> 

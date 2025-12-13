@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Custom WooCommerce product editor that saves store owners 10+ hours per week. Spreadsheet-style bulk editing with inline controls.">
+<meta name="keywords" content="WooCommerce, product editor, bulk edit, custom development, spreadsheet editor">
+<meta name="author" content="RapidWoo">
+<title>Custom WooCommerce Product Editor | RapidWoo</title>
+<!-- Import modular CSS (same as editor) -->
+<link rel="stylesheet" href="./assets/css/main.css">
+<link rel="stylesheet" href="./assets/css/components.css">
+<style>
+/* ============ Page-only styles ============ */
+:root { 
+  --container: 1120px; 
+  --brand: #2563eb; /* Brighter blue for CTAs */
+  --cta-hover: #1d4ed8; /* Darker hover state */
+}
+.container { max-width: var(--container); margin: 0 auto; padding: 0 18px; }
+/* Header */
+.site-header { position: sticky; top: 0; z-index: 60; background: #fff; border-bottom: 1px solid var(--border); }
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.primary-nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.nav-link {
+  text-decoration: none;
+  color: var(--text);
+}
+.nav-link.cta {
+  background: var(--brand);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+/* Primary nav visibility */
+@media (max-width: 860px) {
+  .primary-nav { display: none !important; }
+  .mobile-menu-toggle { display: block !important; }
+}
+/* Mobile menu layout */
+.mobile-menu-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.4); opacity:0; pointer-events:none; transition: opacity .2s ease; }
+.mobile-menu { position: fixed; top:0; right:0; height:100vh; width:min(84vw, 360px); background:#fff; border-left:1px solid var(--line);
+  transform: translateX(100%); transition: transform .25s ease; display:flex; flex-direction:column; padding:14px; box-shadow:-12px 0 32px rgba(10,17,40,.12); }
+.mobile-menu-header { display:flex; align-items:center; justify-content:space-between; padding:6px 2px 12px; border-bottom:1px solid var(--line); }
+.mobile-menu-nav { display:flex; flex-direction:column; }
+.mobile-nav-link { padding:12px 6px; text-decoration:none; color:var(--text); border-bottom:1px solid #f2f4f7; }
+.mobile-nav-link.m-cta { margin-top:10px; text-align:center; border:1px solid var(--line); border-radius:10px; font-weight:600; background: var(--brand); color: #fff; }
+.mobile-nav-link.m-cta:hover { background: var(--cta-hover); }
+.menu-open .mobile-menu-overlay { opacity:1; pointer-events:auto; }
+.menu-open .mobile-menu { transform: translateX(0); }
+/* Hero Section with Screenshot */
+.hero { padding: 72px 0 48px; background: linear-gradient(180deg, #fff, #fafbfc); }
+.hero-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: center;
+}
+.hero-content {
+  padding-right: 20px;
+}
+.eyebrow {
+  color: var(--brand);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .12em;
+  margin-bottom: 12px;
+}
+.h1 {
+  font-size: clamp(28px, 5.2vw, 44px);
+  line-height: 1.1;
+  margin: 0 0 16px;
+  color: var(--ink);
+}
+.lead {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hero-cta .nav-link.cta {
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.hero-cta .nav-link.cta:hover {
+  background: var(--cta-hover);
+}
+.hero-cta .nav-link.ghost {
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  background: transparent;
+  padding: 12px 24px;
+  border-radius: 8px;
+}
+.hero-cta .nav-link.ghost:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+.hero-note {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+/* Hero Visual (Screenshot) */
+.hero-visual {
+  position: relative;
+}
+.hero-screenshot {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 20px rgba(0, 0, 0, 0.08), 0 20px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hero-screenshot:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.06), 0 15px 25px rgba(0, 0, 0, 0.1), 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+/* Trust bar */
+.trust {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.trust-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--brand);
+}
+/* Problem/Solution Section */
+.problem-solution {
+  padding: 64px 0;
+  background: white;
+}
+.ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.ps-card {
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.ps-card.problem {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+.ps-card.solution {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+.ps-card h3 {
+  font-size: 24px;
+  margin: 0 0 16px;
+  color: var(--ink);
+}
+.ps-card p {
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+.ps-card ul {
+  margin: 12px 0;
+  padding-left: 20px;
+}
+.ps-card li {
+  color: var(--text);
+  margin-bottom: 8px;
+}
+/* How It Works */
+.how {
+  padding: 64px 0;
+  background: #fafbfc;
+}
+.how-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.how-header h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.step {
+  text-align: center;
+  padding: 24px;
+}
+.k {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.step h4 {
+  font-size: 20px;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.step p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+/* Pricing Section */
+.pricing {
+  padding: 64px 0;
+  background: white;
+}
+.pricing-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.pricing-header h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.pricing-card {
+  max-width: 500px;
+  margin: 0 auto;
+  border: 2px solid var(--brand);
+  border-radius: 12px;
+  padding: 40px;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+.price {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--brand);
+  margin: 0 0 8px;
+}
+.price-note {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.includes {
+  margin: 24px 0;
+}
+.includes h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.includes ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.includes li {
+  padding: 8px 0;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.includes li:before {
+  content: "✓";
+  color: #22c55e;
+  font-weight: 700;
+  font-size: 18px;
+}
+.guarantee {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #166534;
+  font-weight: 500;
+}
+/* CTA BAND */
+.cta-band {
+  padding: 64px 0;
+  background: linear-gradient(135deg, var(--brand) 0%, #1d4ed8 100%);
+  color: white;
+}
+.cta-content {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.cta-content .h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  margin: 0 0 16px;
+  color: white;
+}
+.cta-content .lead {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 32px;
+}
+.cta-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-actions .nav-link.cta {
+  background: white;
+  color: var(--brand);
+  padding: 14px 28px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.cta-actions .nav-link.ghost {
+  border: 2px solid white;
+  color: white;
+  background: transparent;
+  padding: 14px 28px;
+  border-radius: 8px;
+}
+.cta-actions .nav-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+/* FOOTER */
+.site-footer {
+  padding: 48px 0 24px;
+  background: #0f172a;
+  color: rgba(255, 255, 255, 0.7);
+}
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer-brand .site-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.footer-tagline {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.foot-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.foot-links a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+}
+.foot-links a:hover {
+  color: white;
+}
+/* Lightbox */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.lightbox-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 8px;
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-wrap {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .ps-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-container">
+    <a href="./index.html" class="site-logo" aria-label="RapidWoo Home">
+      <div class="logo-icon"></div>
+      <span>RapidWoo</span>
+    </a>
+    <nav class="primary-nav">
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="./demo/index.html" class="nav-link">Live Demo</a>
+      <a href="/cdn-cgi/l/email-protection#96fef3fafaf9d6e4f7e6fff2e1f9f9b8f5f9fb" class="nav-link cta">Book Free Demo</a>
+    </nav>
+    <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-header">
+    <a href="./index.html" class="site-logo" aria-label="RapidWoo Home">
+      <div class="logo-icon"></div>
+      <span>RapidWoo</span>
+    </a>
+    <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+  </div>
+  <nav class="mobile-menu-nav">
+    <a href="#how" class="mobile-nav-link">How It Works</a>
+    <a href="#pricing" class="mobile-nav-link">Pricing</a>
+    <a href="./demo/index.html" class="mobile-nav-link">Live Demo</a>
+    <a href="/cdn-cgi/l/email-protection#cca4a9a0a0a38cbeadbca5a8bba3a3e2afa3a1" class="mobile-nav-link m-cta">Book Free Demo</a>
+  </nav>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="container hero-wrap">
+    <div class="hero-content">
+      <div class="eyebrow">Custom WooCommerce Development</div>
+      <h1 class="h1">Stop Wasting Hours on Product Updates</h1>
+      <p class="lead">Custom WooCommerce product editor that cuts your product management time by 80%. Update 50 products in 2 minutes instead of 30 minutes.</p>
+      <div class="hero-cta">
+        <a class="nav-link cta" href="/cdn-cgi/l/email-protection#09616c656566497b6879606d7e6666276a6664">Schedule Free Demo</a>
+        <a class="nav-link ghost" href="./demo/index.html">Try Live Demo</a>
+      </div>
+      <p class="hero-note">✓ Spreadsheet-style editing &nbsp;•&nbsp; ✓ Bulk operations &nbsp;•&nbsp; ✓ 30-day guarantee</p>
+    </div>
+    <div class="hero-visual">
+      <img src="./assets/images/editor-table.png"
+           alt="RapidWoo Product Editor - Spreadsheet-style interface"
+           class="hero-screenshot"
+           loading="eager">
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<section class="trust">
+  <div class="container trust-row">
+    <span>⚡ 5-Day Setup</span>
+    <span>🎯 Custom Installation</span>
+    <span>📊 Spreadsheet Editing</span>
+    <span>🔄 Bulk Operations</span>
+    <span>💯 30-Day Guarantee</span>
+  </div>
+</section>
+
+<!-- PROBLEM/SOLUTION -->
+<section class="problem-solution">
+  <div class="container">
+    <div class="ps-grid">
+      <div class="ps-card problem">
+        <h3>❌ The Problem</h3>
+        <p>Managing products in WooCommerce is painfully slow:</p>
+        <ul>
+          <li>Click "Edit" on each product individually</li>
+          <li>Wait for page to load</li>
+          <li>Change one field</li>
+          <li>Click "Update"</li>
+          <li>Wait for save</li>
+          <li>Navigate back</li>
+          <li>Repeat 50 more times</li>
+        </ul>
+        <p><strong>Result:</strong> 30+ minutes wasted on simple updates.</p>
+      </div>
+      
+      <div class="ps-card solution">
+        <h3>✓ The Solution</h3>
+        <p>Custom product editor that works like a spreadsheet:</p>
+        <ul>
+          <li>See all products at once</li>
+          <li>Edit inline (no page loads)</li>
+          <li>Change prices, stock, titles instantly</li>
+          <li>Bulk operations for 100+ products</li>
+          <li>Auto-save as you type</li>
+          <li>Image editing with one click</li>
+        </ul>
+        <p><strong>Result:</strong> 2 minutes for the same work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-header">
+      <h2>How It Works</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="k">1</div>
+        <h4>Free Demo</h4>
+        <p>Schedule a 10-minute screen share. I'll show you exactly how it works with your products.</p>
+      </div>
+      <div class="step">
+        <div class="k">2</div>
+        <h4>Custom Setup</h4>
+        <p>I install the editor in your WooCommerce store and customize it for your workflow. Takes 5 days.</p>
+      </div>
+      <div class="step">
+        <div class="k">3</div>
+        <h4>Training & Support</h4>
+        <p>1-hour training session so you know how to use everything. Plus 30 days of email support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="pricing-header">
+      <h2>Simple, Transparent Pricing</h2>
+    </div>
+    <div class="pricing-card">
+      <div class="price">$500</div>
+      <div class="price-note">Introductory rate for first 5 clients (normally $2,000)</div>
+      
+      <div class="includes">
+        <h4>What's Included:</h4>
+        <ul>
+          <li>Custom editor installed in your WooCommerce store</li>
+          <li>All products imported and configured</li>
+          <li>Spreadsheet-style inline editing</li>
+          <li>Bulk operations (unlimited products)</li>
+          <li>Image management system</li>
+          <li>1-hour training session (Zoom)</li>
+          <li>30 days email support</li>
+          <li>Setup completed in 5 business days</li>
+        </ul>
+      </div>
+      
+      <div class="guarantee">
+        🛡️ 30-Day Money-Back Guarantee
+      </div>
+      
+      <div style="margin-top: 32px; text-align: center;">
+        <a href="/cdn-cgi/l/email-protection#4028252c2c2f003221302924372f2f6e232f2d" class="nav-link cta" style="display: inline-block; padding: 14px 32px; font-size: 16px;">Schedule Free Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-content">
+      <div class="h2">Ready to Save 10+ Hours Per Week?</div>
+      <p class="lead">Book a free 10-minute demo. No obligation. See exactly how it works with your products.</p>
+      <div class="cta-actions">
+        <a class="nav-link cta" href="/cdn-cgi/l/email-protection#751d1019191a350714051c11021a1a5b161a18">Schedule Free Demo</a>
+        <a class="nav-link ghost" href="./demo/index.html">Try Live Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="./index.html" class="site-logo" aria-label="RapidWoo Home">
+          <div class="logo-icon"></div>
+          <span>RapidWoo</span>
+        </a>
+        <p class="footer-tagline">Custom WooCommerce product management solutions.</p>
+      </div>
+      <div class="foot-links">
+        <a href="./index.html">Home</a>
+        <a href="./demo/index.html">Live Demo</a>
+        <a href="/cdn-cgi/l/email-protection#076f626b6b68477566776e637068682964686a">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Lightbox Overlay -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">✕</button>
+  <img class="lightbox-image" src="" alt="">
+</div>
+
+<!-- Mobile menu script -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function () {
+  const body = document.body;
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const menu = document.getElementById('mobile-menu');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  
+  function openMenu() {
+    body.classList.add('menu-open');
+    toggle?.setAttribute('aria-expanded', 'true');
+    menu?.querySelector('.mobile-nav-link')?.focus();
+    body.style.overflow = 'hidden';
+  }
+  
+  function closeMenu() {
+    body.classList.remove('menu-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+    body.style.overflow = '';
+  }
+  
+  toggle?.addEventListener('click', () => {
+    body.classList.contains('menu-open') ? closeMenu() : openMenu();
+  });
+  
+  overlay?.addEventListener('click', closeMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && body.classList.contains('menu-open')) closeMenu();
+  });
+})();
+</script>
+
+<script>
+(function() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = lightbox.querySelector('.lightbox-image');
+  const closeBtn = lightbox.querySelector('.lightbox-close');
+  const clickableImages = ['.hero-screenshot'];
+  clickableImages.forEach(selector => {
+    document.querySelectorAll(selector).forEach(element => {
+      const img = element.tagName === 'IMG' ? element : element.querySelector('img');
+      if (img) {
+        element.style.cursor = 'zoom-in';
+        element.addEventListener('click', (e) => {
+          if (img.src) {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt || 'Product screenshot';
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
+    });
+  });
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      lightboxImg.src = '';
+    }, 200);
+  }
+  closeBtn.addEventListener('click', (e) =>
