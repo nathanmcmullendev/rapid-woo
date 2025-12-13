@@ -277,6 +277,14 @@
   overflow-y: auto;
 }
 
+@media (max-width: 768px) {
+  .modal,
+  .product-modal,
+  .shop-modal {
+    padding: 0;
+  }
+}
+
 .modal.show,
 .product-modal.show,
 .shop-modal.show {
@@ -430,6 +438,7 @@ select {
 .shop-stock-badge.instock {
   background: #d4edda;
   color: #155724;
+  display:none;
 }
 
 .stock-badge.outofstock,
