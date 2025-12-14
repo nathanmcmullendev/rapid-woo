@@ -460,3 +460,9 @@ body.snipcart--cart-opened .header-nav,
 body.snipcart--cart-opened .site-header {
   display: none !important;
 }
+
+/* Hide header when Snipcart cart is open */
+body.snipcart--cart-opened .site-header,
+body.snipcart--cart-opened .header-nav {
+  display: none !important;
+}
