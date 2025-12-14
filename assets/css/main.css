@@ -458,5 +458,5 @@ p {
 /* Hide header when Snipcart cart is open */
 body.snipcart--cart-opened .header-nav,
 body.snipcart--cart-opened .site-header {
-  z-index: 1 !important;
+  display: none !important;
 }
